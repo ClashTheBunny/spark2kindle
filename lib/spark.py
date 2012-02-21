@@ -13,7 +13,7 @@ class SparkIndex(prototypes.Index):
         page = urllib.urlopen(url)
         page_source = page.readlines()
 
-        self.title = "Invisible Man"
+        self.title = self.get_title(page_source)
         self.author = self.get_author(page_source)
         self.sections = self.get_sections(page_source)
         [self.dirname, self.dirname_no_slash] = self.make_dirnames(url)
@@ -46,7 +46,7 @@ class SparkIndex(prototypes.Index):
                 return author
 
     def get_title(self, page_source):
-        regTitle = re.compile('<div.*?\"titleLeft\"><h2>(.*?)<\/')
+        regTitle = re.compile('<div.*?\"titleLeft\"><h[0-9]>(.*?)<\/')
         for line in page_source:
             m = regTitle.search(line)
             if m:
